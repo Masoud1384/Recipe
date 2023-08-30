@@ -1,10 +1,8 @@
 ﻿namespace Application.Contracts.RecipeContracts
 {
-    public class RecipeViewModel
+    public class RecipeViewModel : CreateRecipeCommand
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Instructions { get; set; }
+        public string AuthorName { get; set; }
     }
 }
