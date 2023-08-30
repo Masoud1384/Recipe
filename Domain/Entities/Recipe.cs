@@ -18,7 +18,6 @@
             Title = title;
             Description = description;
             Instructions = instructions;
-            CreatedAt = DateTime.UtcNow;
             IsRemoved = false;
             AuthorId = authorId;
         }

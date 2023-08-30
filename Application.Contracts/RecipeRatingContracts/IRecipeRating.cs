@@ -1,15 +1,17 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts.RecipeContracts;
+using Domain.Entities;
 using System.Linq.Expressions;
 
-namespace Application.Contracts.RecipeContracts
+namespace Application.Contracts.RecipeRatingContracts
 {
-    public interface IRecipeApplication
+    public interface IRecipeRating
     {
         List<Recipe> SelectAllRecipes();
         Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);
         bool DeleteRecipe(int RecipeId);
-        bool AddRecipe(CreateRecipeCommand Recipe);
+        bool AddRecipe(CreateRecipeRatingCommand Recipe);
         bool Update(UpdateRecipeCommand Recipe);
         void ActivateRecipe(int RecipeId);
+
     }
 }
