@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Domain.Repositories
 {
-    public interface IRecipeRating
+    public interface IRecipeRatingRepository
     {
         List<RecipeRating> SelectAllRatings();
         Recipe FindRating(Expression<Func<RecipeRating, bool>> expression);

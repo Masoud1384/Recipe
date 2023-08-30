@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Domain.Repositories
 {
-    public interface IUserServices
+    public interface IUserRepository
     {
         List<User> SelectAllUsers();
         User FindUser(Expression<Func<User, bool>> expression);
