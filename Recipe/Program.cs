@@ -1,7 +1,10 @@
+using Infrastructure.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+Bootstraper.Configure(builder.Services);
 
 var app = builder.Build();
 

@@ -1,12 +1,19 @@
 ﻿using Application.Contracts.RecipeContracts;
 using Application.Contracts.RecipeRatingContracts;
 using Domain.Entities;
+using Domain.Repositories;
 using System.Linq.Expressions;
 
 namespace Application
 {
-    public class RecipeRatingApplication : IRecipeRating
+    public class RecipeRatingApplication : IRecipeRatingApplication
     {
+        private IRecipeRatingRepository _ratingRepository;
+
+        public RecipeRatingApplication(IRecipeRatingRepository ratingRepository)
+        {
+            _ratingRepository = ratingRepository;
+        }
         public void ActivateRecipe(int RecipeId)
         {
             throw new NotImplementedException();

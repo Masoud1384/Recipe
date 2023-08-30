@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Application.Contracts.RecipeRatingContracts
 {
-    public interface IRecipeRating
+    public interface IRecipeRatingApplication
     {
         List<Recipe> SelectAllRecipes();
         Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);

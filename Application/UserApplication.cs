@@ -1,12 +1,19 @@
 ﻿using Application.Contracts.RecipeContracts;
 using Application.Contracts.UserContracts;
 using Domain.Entities;
+using Domain.Repositories;
 using System.Linq.Expressions;
 
 namespace Application
 {
     public class UserApplication : IUserApplication
     {
+        private IUserRepository _userRepository;
+
+        public UserApplication(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
         public void ActivateRecipe(int RecipeId)
         {
             throw new NotImplementedException();
