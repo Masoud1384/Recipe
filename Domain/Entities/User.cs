@@ -8,8 +8,8 @@
         public string Password { get; private set; }
         public bool IsActive { get; private set; }
 
-        private ICollection<Recipe> _createdRecipes = new List<Recipe>();
-        private ICollection<RecipeRating> _ratedRecipes = new List<RecipeRating>();
+        public ICollection<Recipe> _createdRecipes { get; set; }
+        public ICollection<RecipeRating> _ratedRecipes { get; set; }
         private User() { }
         public User(string username, string email, string password,int id = 0)
         {

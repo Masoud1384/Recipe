@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace Infrastructure.Mapping
@@ -29,11 +30,15 @@ namespace Infrastructure.Mapping
             builder.Property(u => u.Email)
                 .IsRequired()
                 .HasConversion(u => Encode(u), u => DeCode(u));
-            builder.Property(u=>u.IsActive)
+            builder.Property(u => u.IsActive)
                 .IsRequired()
-                .HasConversion(new BoolToStringConverter("DeActive","Active"));
+                .HasConversion(new BoolToStringConverter("DeActive", "Active"));
+            builder.HasData(new User("default user", "def@default.default", "default123", 1000));
 
-
+            builder
+                .HasMany(user => user._ratedRecipes)
+                .WithOne(related => related.User)
+                .OnDelete(DeleteBehavior.Restrict);
         }
         public static string Encode(string text)
         {

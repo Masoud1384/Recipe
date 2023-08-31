@@ -10,8 +10,8 @@
         public int AuthorId { get; private set; }
         public User Author { get; private set; }
 
-        private ICollection<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
-        public ICollection<RecipeRating>? _ratings { get; private set; }
+        public ICollection<RecipeIngredient> _ingredients { get; set; }
+        public ICollection<RecipeRating>? _ratings { get; set; }
         private Recipe() { }
         public Recipe(string title, string description, string instructions, int authorId , int id = 0)
         {

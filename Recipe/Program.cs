@@ -1,9 +1,13 @@
+using Infrastructure;
 using Infrastructure.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddDbContext<Context>(option=>option.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 Bootstraper.Configure(builder.Services);
 
 var app = builder.Build();

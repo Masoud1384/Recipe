@@ -7,7 +7,7 @@
         public string Quantity { get; private set; }
         public bool IsRemoved { get; private set; }
         public int RecipeId { get; private set; }
-        public Recipe Recipe { get; private set; }
+        public Recipe Recipe { get; set; }
         private RecipeIngredient()
         {
 

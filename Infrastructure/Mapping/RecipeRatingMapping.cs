@@ -19,6 +19,11 @@ namespace Infrastructure.Mapping
             builder.Property(r => r.IsRemoved)
                 .IsRequired()
                 .HasConversion(new BoolToStringConverter("Active", "NotAcive"));
+
+            builder
+               .HasOne(user => user.Recipe)
+               .WithMany(related => related._ratings)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
