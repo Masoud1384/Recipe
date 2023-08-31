@@ -5,11 +5,11 @@ namespace Application.Contracts.RecipeIngredientContracts
 {
     public interface IRecipeIngredientApplication
     {
-        List<IngredientViewModel> SelectAll();
-        IngredientViewModel Find(Expression<Func<Recipe, bool>> expression);
-        bool Delete(int RecipeId);
-        bool Add(CreateIngredientCommand Recipe);
-        bool Update(UpdateIngredientCommand Recipe);
+        List<IngredientViewModel> SelectAllIngredient();
+        IngredientViewModel FindIngredient(Expression<Func<RecipeIngredient, bool>> expression);
+        void Delete(int IngredientId);
+        void AddIngredient(CreateIngredientCommand createIngredientcommand);
+        void Update(UpdateIngredientCommand updateIngredientCommand);
         void ActivateIngredient(int ingredientId);
     }
 }

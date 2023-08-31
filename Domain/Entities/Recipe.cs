@@ -13,25 +13,25 @@
         private ICollection<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
         public ICollection<RecipeRating>? _ratings { get; private set; }
         private Recipe() { }
-        public Recipe(string title, string description, string instructions, int authorId)
+        public Recipe(string title, string description, string instructions, int authorId , int id = 0)
         {
             Title = title;
             Description = description;
             Instructions = instructions;
             IsRemoved = false;
             AuthorId = authorId;
-        }
-        public void Edit(string title, string description, string instructions)
-        {
-            Title = title;
-            Description = description;
-            Instructions = instructions;
+            if (id != 0)
+                this.Id = id;
         }
         public void EditIngrediant(List<RecipeIngredient> recipeIngredients)
         {
             this._ingredients = recipeIngredients;
         }
-        public void MarkAsRemoved()
+        public void Delete()
+        {
+            IsRemoved = true;
+        }
+        public void Restore()
         {
             IsRemoved = true;
         }
@@ -43,6 +43,13 @@
         {
             _ratings.Add(rating);
         }
+        public void Update(Recipe recipe)
+        {
+            this.Title = recipe.Title;
+            this.Description = recipe.Description;
+            this.Instructions = recipe.Instructions;
+        }
+
         public List<RecipeIngredient> FetchIngredients()
         {
             return (List<RecipeIngredient>)this._ingredients;

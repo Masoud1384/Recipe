@@ -14,34 +14,68 @@ namespace Application
         {
             _ratingRepository = ratingRepository;
         }
-        public void ActivateRecipe(int RecipeId)
+        public void ActivateRating(int ratingId)
         {
-            throw new NotImplementedException();
+            var rating = _ratingRepository.Get(ratingId);
+            if (rating != null)
+            {
+                rating.Restore();
+                _ratingRepository.SaveChanges();
+            }
         }
 
-        public bool AddRecipe(CreateRecipeRatingCommand Recipe)
+        public void AddRating(CreateRecipeRatingCommand rating)
         {
-            throw new NotImplementedException();
+            var recipe = new RecipeRating(rating.Rating, rating.RecipeId);
+            _ratingRepository.Create(recipe);
+            _ratingRepository.SaveChanges();
         }
 
-        public bool DeleteRecipe(int RecipeId)
+        public void Delete(int ratingId)
         {
-            throw new NotImplementedException();
+            var rating = _ratingRepository.Get(ratingId);
+            if (rating != null)
+            {
+                rating.Remove();
+                _ratingRepository.SaveChanges();
+            }
         }
 
-        public Recipe FindRecipe(Expression<Func<Recipe, bool>> expression)
+        public RecipeRatingViewModel FindRecipe(Expression<Func<RecipeRating, bool>> expression)
         {
-            throw new NotImplementedException();
+            var rating = _ratingRepository.FindRating(expression);
+            return new RecipeRatingViewModel
+            {
+                AuthorId = rating.UserId,
+                Id = rating.Id,
+                IsRemoved = rating.IsRemoved,
+                Rating = rating.Rating,
+                RecipeId = rating.RecipeId,
+            };
         }
 
-        public List<Recipe> SelectAllRecipes()
+        public List<RecipeRatingViewModel> SelectAllRecipes()
         {
-            throw new NotImplementedException();
+            return _ratingRepository.Get().Select(x => new RecipeRatingViewModel
+            {
+                AuthorId = x.UserId,
+                Id = x.Id,
+                IsRemoved = x.IsRemoved,
+                Rating = x.Rating,
+                RecipeId = x.RecipeId,
+            }).OrderByDescending(x => x.Id).ToList();
         }
 
-        public bool Update(UpdateRecipeCommand Recipe)
+        public void Update(UpdateRatingRecipeCommand ratingcmd)
         {
-            throw new NotImplementedException();
+            var rating = _ratingRepository.FindRating(r => r.Id == ratingcmd.Id);
+            if (rating != null)
+            {
+                var updateobj = new RecipeRating(rating.Rating,rating.RecipeId,rating.Id);
+                _ratingRepository.Update(updateobj);
+            }
+            else
+                throw new NullReferenceException();
         }
     }
 }

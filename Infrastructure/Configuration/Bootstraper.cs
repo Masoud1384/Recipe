@@ -16,12 +16,12 @@ namespace Infrastructure.Configuration
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<IRecipeRatingRepository, RecipeRatingRepository>();
             service.AddScoped<IRecipeRepository, RecipeRepository>();
-            service.AddScoped<IRecipeIngredientRepository, RecipeIngradientRepository>();
+            service.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
 
             service.AddScoped<IRecipeApplication, RecipeApplication>();
             service.AddScoped<IUserApplication, UserApplication>();
             service.AddScoped<IRecipeRatingApplication, RecipeRatingApplication>();
-            service.AddScoped<IRecipeIngredientApplication, RecipeIngradientApplication>();
+            service.AddScoped<IRecipeIngredientApplication, RecipeIngredientApplication>();
         }
     }
 }

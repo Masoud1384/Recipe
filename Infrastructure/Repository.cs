@@ -1,13 +1,14 @@
 ﻿using Domain;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infrastructure
 {
-    public class RepositoryBase<TKey, T> : IRepository<TKey, T> where T : class
+    public class Repository<TKey, T> : IRepository<TKey, T> where T : class
     {
         private readonly Context _context;
 
-        public RepositoryBase(Context context)
+        public Repository(Context context)
         {
             _context = context;
         }
@@ -37,19 +38,5 @@ namespace Infrastructure
             _context.SaveChanges();
         }
 
-        public TKey Get(T id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Create(TKey entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Exists(Expression<Func<TKey, bool>> expression)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

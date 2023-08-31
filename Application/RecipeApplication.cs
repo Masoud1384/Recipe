@@ -7,41 +7,75 @@ namespace Application
 {
     public class RecipeApplication : IRecipeApplication
     {
-        private IRecipeApplication _recipeApplication;
+        private IRecipeRepository _reciperepository;
 
-        public RecipeApplication(RecipeApplication recipeApplication)
+        public RecipeApplication(IRecipeRepository reciperepository)
         {
-            _recipeApplication = recipeApplication;
+            _reciperepository = reciperepository;
         }
 
         public void ActivateRecipe(int RecipeId)
         {
-            throw new NotImplementedException();
+            var recipe = _reciperepository.Get(RecipeId);
+            if (recipe != null)
+            {
+                recipe.Restore();
+                _reciperepository.SaveChanges();
+            }
         }
 
-        public bool AddRecipe(CreateRecipeCommand Recipe)
+        public void AddRecipe(CreateRecipeCommand Recipe)
         {
-            throw new NotImplementedException();
+            var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId);
+            _reciperepository.Create(recipe);
+            _reciperepository.SaveChanges();
         }
 
-        public bool DeleteRecipe(int RecipeId)
+        public void DeleteRecipe(int RecipeId)
         {
-            throw new NotImplementedException();
+            var recipe = _reciperepository.Get(RecipeId);
+            if (recipe != null)
+            {
+                recipe.Delete();
+                _reciperepository.SaveChanges();
+            }
         }
 
-        public Recipe FindRecipe(Expression<Func<Recipe, bool>> expression)
+        public RecipeViewModel FindRecipe(Expression<Func<Recipe, bool>> expression)
         {
-            throw new NotImplementedException();
+            var recipe = _reciperepository.FindRecipe(expression);
+            return new RecipeViewModel
+            {
+                AuthorId = recipe.AuthorId,
+                Description = recipe.Description,
+                Instructions = recipe.Instructions,
+                Id = recipe.Id,
+                Title = recipe.Title,
+            };
         }
 
-        public List<Recipe> SelectAllRecipes()
+        public List<RecipeViewModel> SelectAllRecipes()
         {
-            throw new NotImplementedException();
+            return _reciperepository.Get().Select(x => new RecipeViewModel
+            {
+                Id = x.Id,
+                Title = x.Title,
+                AuthorId = x.AuthorId,
+                Description = x.Description,
+                Instructions = x.Instructions,
+            }).OrderByDescending(x => x.Id).ToList();
         }
 
-        public bool Update(UpdateRecipeCommand Recipe)
+        public void Update(UpdateRecipeCommand Recipe)
         {
-            throw new NotImplementedException();
+            var recipeUpdate = _reciperepository.FindRecipe(r => r.Id == Recipe.Id);
+            if (recipeUpdate != null)
+            {
+                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId,recipeUpdate.Id);
+               _reciperepository.Update(updateobj);
+            }
+            else
+                throw new NullReferenceException();
         }
     }
 }

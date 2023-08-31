@@ -3,6 +3,5 @@
     public class IngredientViewModel : CreateIngredientCommand
     {
         public int Id { get; set; }
-        public string RecipeName { get; set; }
     }
 }

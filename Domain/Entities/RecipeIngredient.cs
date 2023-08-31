@@ -10,14 +10,16 @@
         public Recipe Recipe { get; private set; }
         private RecipeIngredient()
         {
-            
+
         }
-        public RecipeIngredient(string ingredientName, string quantity, int recipeId)
+        public RecipeIngredient(string ingredientName, string quantity, int recipeId, int id = 0)
         {
             IngredientName = ingredientName;
             Quantity = quantity;
             RecipeId = recipeId;
             IsRemoved = false;
+            if (id > 0)
+                this.Id = id;
         }
         public void Remove()
         {

@@ -1,4 +1,4 @@
-﻿using Application.Contracts.RecipeContracts;
+﻿using Application.Contracts.RecipeIngredientContracts;
 using Application.Contracts.UserContracts;
 using Domain.Entities;
 using Domain.Repositories;
@@ -14,29 +14,69 @@ namespace Application
         {
             _userRepository = userRepository;
         }
-        public void ActivateRecipe(int RecipeId)
+
+        public void ActivateUser(int userId)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.Get(userId);
+            if (user != null)
+            {
+                user.Activate();
+                _userRepository.SaveChanges();
+            }
         }
-        public bool AddRecipe(CreateRecipeCommand Recipe)
+
+        public void AddUser(CreateUserCommand usercmd)
         {
-            throw new NotImplementedException();
+            var user = new User(usercmd.Username, usercmd.Email, usercmd.Password);
+            _userRepository.Create(user);
+            _userRepository.SaveChanges();
         }
-        public bool DeleteRecipe(int RecipeId)
+
+        public void DeActiveUser(int userId)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.Get(userId);
+            if (user != null)
+            {
+                user.DeActive();
+                _userRepository.SaveChanges();
+            }
         }
-        public Recipe FindRecipe(Expression<Func<Recipe, bool>> expression)
+
+        public UserViewMdoel FindRecipe(Expression<Func<User, bool>> expression)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.FindUser(expression);
+            return new UserViewMdoel
+            {
+                IsActive = user.IsActive,
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Password = user.Password,
+            };
         }
-        public List<Recipe> SelectAllRecipes()
+
+        public List<UserViewMdoel> SelectAllUsers()
         {
-            throw new NotImplementedException();
+            return _userRepository.Get().Select(t => new UserViewMdoel
+            {
+                Id = t.Id,
+                IsActive = t.IsActive,
+                Email = t.Email,
+                Password = t.Password,
+                Username = t.Username,
+            }).OrderByDescending(t => t.Id).ToList();
         }
-        public bool Update(UpdateRecipeCommand Recipe)
+
+        public void Update(UpdateUserCommand usercmd)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.FindUser(r => r.Id == usercmd.Id);
+            if (user != null)
+            {
+                var updateobj = new User(usercmd.Username,usercmd.Email,usercmd.Password,usercmd.Id);
+                _userRepository.Update(updateobj);
+            }
+            else
+                throw new NullReferenceException();
         }
     }
 }

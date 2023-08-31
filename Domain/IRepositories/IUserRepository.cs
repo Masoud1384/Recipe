@@ -3,13 +3,11 @@ using System.Linq.Expressions;
 
 namespace Domain.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<int, User>
     {
-        List<User> SelectAllUsers();
+        //find by id , select all , add , isexist , savechange 
         User FindUser(Expression<Func<User, bool>> expression);
-        bool DeleteUser(int UserId);
-        bool AddUser(User User, string email, string fullname);
-        bool Update(User User);
-        void ActivateUser(int UserId);
+        List<User> users(Expression<Func<User, bool>> expression);
+        void Update(User user);
     }
 }

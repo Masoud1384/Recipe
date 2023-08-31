@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public interface IRepository<T,TKey> where T : class
+    public interface IRepository<TKey, T> where T : class
     {
         T Get(TKey id);
 

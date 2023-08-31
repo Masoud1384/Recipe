@@ -4,40 +4,26 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<int, User>, IUserRepository
     {
         private Context _context;
 
         public UserRepository(Context context)
+            : base(context)
         {
             _context = context;
         }
-        public void ActivateUser(int UserId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddUser(User User, string email, string fullname)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteUser(int UserId)
-        {
-            throw new NotImplementedException();
-        }
-
         public User FindUser(Expression<Func<User, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public List<User> SelectAllUsers()
+        public void Update(User user)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(User User)
+        public List<User> users(Expression<Func<User, bool>> expression)
         {
             throw new NotImplementedException();
         }

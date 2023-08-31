@@ -4,27 +4,26 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public class RecipeRatingRepository : Repository<int, RecipeRating>, IRecipeRatingRepository
+    public class RecipeIngredientRepository : Repository<int, RecipeIngredient>, IRecipeIngredientRepository
     {
         private Context _context;
 
-        public RecipeRatingRepository(Context context)
-            :base(context)
+        public RecipeIngredientRepository(Context context) : base(context)
         {
             _context = context;
         }
 
-        public RecipeRating FindRating(Expression<Func<RecipeRating, bool>> expression)
+        public RecipeIngredient FindIngredient(Expression<Func<RecipeIngredient, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public List<RecipeRating> Ratings(Expression<Func<Recipe, bool>> expression)
+        public List<RecipeIngredient> Ingredients(Expression<Func<Recipe, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(RecipeRating recipeRating)
+        public void Update(RecipeIngredient recipeRating)
         {
             throw new NotImplementedException();
         }

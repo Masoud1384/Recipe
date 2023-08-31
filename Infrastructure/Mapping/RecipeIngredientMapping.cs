@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Mapping
 {
-    public class RecipeIngradientMapping : IEntityTypeConfiguration<RecipeIngradientMapping>
+    public class RecipeIngredientMapping : IEntityTypeConfiguration<RecipeIngredientMapping>
     {
-        public void Configure(EntityTypeBuilder<RecipeIngradientMapping> builder)
+        public void Configure(EntityTypeBuilder<RecipeIngredientMapping> builder)
         {
             throw new NotImplementedException();
         }

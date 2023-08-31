@@ -13,11 +13,13 @@
         {
 
         }
-        public RecipeRating(byte rating,int recipeId)
+        public RecipeRating(byte rating,int recipeId,int id = 0)
         {
             this.Rating = rating;
             RecipeId = recipeId;
             IsRemoved = false;
+            if (id > 0) 
+                this.Id= id;
         }
         public void Remove()
         {

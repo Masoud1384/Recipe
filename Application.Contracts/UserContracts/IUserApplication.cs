@@ -6,11 +6,11 @@ namespace Application.Contracts.UserContracts
 {
     public interface IUserApplication
     {
-        List<Recipe> SelectAllRecipes();
-        Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);
-        bool DeleteRecipe(int RecipeId);
-        bool AddRecipe(CreateRecipeCommand Recipe);
-        bool Update(UpdateRecipeCommand Recipe);
-        void ActivateRecipe(int RecipeId);
+        List<UserViewMdoel> SelectAllUsers();
+        UserViewMdoel FindRecipe(Expression<Func<User, bool>> expression);
+        void DeActiveUser(int userI);
+        void AddUser(CreateUserCommand user);
+        void Update(UpdateUserCommand user);
+        void ActivateUser(int userId);
     }
 }

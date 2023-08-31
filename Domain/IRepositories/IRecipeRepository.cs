@@ -3,13 +3,11 @@ using System.Linq.Expressions;
 
 namespace Domain.Repositories
 {
-    public interface IRecipeRepository
+    public interface IRecipeRepository : IRepository<int , Recipe>
     {
-        List<Recipe> SelectAllRecipes();
+        //find by id , select all , add , isexist , savechange 
         Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);
-        bool DeleteRecipe(int RecipeId);
-        bool AddRecipe(Recipe Recipe);
-        bool Update(Recipe Recipe);
-        void ActivateRecipe(int RecipeId);
+        List<Recipe> recipes(Expression<Func<Recipe,bool>> expression);
+        void Update(Recipe recipe);
     }
 }

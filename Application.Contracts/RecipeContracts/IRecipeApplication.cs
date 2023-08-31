@@ -5,11 +5,11 @@ namespace Application.Contracts.RecipeContracts
 {
     public interface IRecipeApplication
     {
-        List<Recipe> SelectAllRecipes();
-        Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);
-        bool DeleteRecipe(int RecipeId);
-        bool AddRecipe(CreateRecipeCommand Recipe);
-        bool Update(UpdateRecipeCommand Recipe);
+        List<RecipeViewModel> SelectAllRecipes();
+        RecipeViewModel FindRecipe(Expression<Func<Recipe, bool>> expression);
+        void DeleteRecipe(int RecipeId);
+        void AddRecipe(CreateRecipeCommand Recipe);
+        void Update(UpdateRecipeCommand Recipe);
         void ActivateRecipe(int RecipeId);
     }
 }
