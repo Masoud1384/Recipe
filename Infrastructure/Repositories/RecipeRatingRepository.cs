@@ -16,17 +16,19 @@ namespace Infrastructure.Repositories
 
         public RecipeRating FindRating(Expression<Func<RecipeRating, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.ratings.FirstOrDefault(expression);
         }
 
-        public List<RecipeRating> Ratings(Expression<Func<Recipe, bool>> expression)
+        public List<RecipeRating> Ratings(Expression<Func<RecipeRating, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.ratings.Where(expression).ToList();
         }
 
         public void Update(RecipeRating recipeRating)
         {
-            throw new NotImplementedException();
+            var rating = Get(recipeRating.Id);
+            rating.Edit(rating.Rating);
+            _context.SaveChanges();
         }
     }
 }

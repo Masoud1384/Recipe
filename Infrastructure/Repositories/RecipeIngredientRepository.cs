@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
@@ -15,17 +16,20 @@ namespace Infrastructure.Repositories
 
         public RecipeIngredient FindIngredient(Expression<Func<RecipeIngredient, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.ingredients.FirstOrDefault(expression);
         }
 
-        public List<RecipeIngredient> Ingredients(Expression<Func<Recipe, bool>> expression)
+        public List<RecipeIngredient> Ingredients(Expression<Func<RecipeIngredient, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.ingredients.Where(expression).ToList();
+
         }
 
-        public void Update(RecipeIngredient recipeRating)
+        public void Update(RecipeIngredient recipeIngredient)
         {
-            throw new NotImplementedException();
+            var ingredient = Get(recipeIngredient.Id);
+            ingredient.Edit(recipeIngredient.IngredientName,recipeIngredient.Quantity);
+            _context.SaveChanges();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Domain.Repositories
     {
         //find by id , select all , add , isexist , savechange 
         RecipeRating FindRating(Expression<Func<RecipeRating, bool>> expression);
-        List<RecipeRating> Ratings(Expression<Func<Recipe, bool>> expression);
+        List<RecipeRating> Ratings(Expression<Func<RecipeRating, bool>> expression);
         void Update(RecipeRating recipeRating);
     }
 }

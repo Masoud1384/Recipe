@@ -22,12 +22,13 @@ namespace Infrastructure.Repositories
         public List<Recipe> recipes(Expression<Func<Recipe, bool>> expression)
         {
             return _context.recipes.Where(expression).ToList();
-
         }
 
         public void Update(Recipe recipe)
         {
-            throw new NotImplementedException();
+            var Recipe = Get(recipe.Id);
+            Recipe.Update(recipe);
+            _context.SaveChanges();
         }
     }
 }
