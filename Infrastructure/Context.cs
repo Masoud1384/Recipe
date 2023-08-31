@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Infrastructure
 {
@@ -23,5 +25,8 @@ namespace Infrastructure
             builder.ApplyConfigurationsFromAssembly(assembly);
         }
 
+
+
+       
     }
 }
