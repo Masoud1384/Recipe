@@ -11,7 +11,6 @@
         public User Author { get; private set; }
 
         public ICollection<RecipeIngredient> _ingredients { get; set; }
-        public ICollection<RecipeRating>? _ratings { get; set; }
         private Recipe() { }
         public Recipe(string title, string description, string instructions, int authorId , int id = 0)
         {
@@ -38,10 +37,6 @@
         public void AddIngredient(RecipeIngredient ingredient)
         {
             _ingredients.Add(ingredient);
-        }
-        public void AddRating(RecipeRating rating)
-        {
-            _ratings.Add(rating);
         }
         public void Update(Recipe recipe)
         {

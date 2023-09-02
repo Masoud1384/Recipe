@@ -1,7 +1,9 @@
 ﻿using Application.Contracts.RecipeContracts;
 using Domain.Entities;
 using Domain.Repositories;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
+using Application.Contracts.RecipeIngredientContracts;
 
 namespace Application
 {
@@ -56,23 +58,31 @@ namespace Application
 
         public List<RecipeViewModel> SelectAllRecipes()
         {
-            return _reciperepository.Get().Select(x => new RecipeViewModel
+            var all = _reciperepository.Get().Select(x => new RecipeViewModel
             {
                 Id = x.Id,
                 Title = x.Title,
                 AuthorId = x.AuthorId,
                 Description = x.Description,
                 Instructions = x.Instructions,
+                Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
+                {
+                    IngredientName = s.IngredientName,
+                    Quantity = s.Quantity,
+                }),
+
             }).OrderByDescending(x => x.Id).ToList();
+            return all;
         }
+
 
         public void Update(UpdateRecipeCommand Recipe)
         {
             var recipeUpdate = _reciperepository.FindRecipe(r => r.Id == Recipe.Id);
             if (recipeUpdate != null)
             {
-                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId,recipeUpdate.Id);
-               _reciperepository.Update(updateobj);
+                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId, recipeUpdate.Id);
+                _reciperepository.Update(updateobj);
             }
             else
                 throw new NullReferenceException();

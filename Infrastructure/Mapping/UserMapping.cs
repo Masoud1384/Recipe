@@ -35,10 +35,6 @@ namespace Infrastructure.Mapping
                 .HasConversion(new BoolToStringConverter("DeActive", "Active"));
             builder.HasData(new User("default user", "def@default.default", "default123", 1000));
 
-            builder
-                .HasMany(user => user._ratedRecipes)
-                .WithOne(related => related.User)
-                .OnDelete(DeleteBehavior.Restrict);
         }
         public static string Encode(string text)
         {

@@ -9,7 +9,6 @@
         public bool IsActive { get; private set; }
 
         public ICollection<Recipe> _createdRecipes { get; set; }
-        public ICollection<RecipeRating> _ratedRecipes { get; set; }
         private User() { }
         public User(string username, string email, string password,int id = 0)
         {
@@ -45,17 +44,9 @@
             _createdRecipes.Add(recipe);
             return recipe;
         }
-        public void RateRecipe(RecipeRating rating)
-        {
-            _ratedRecipes.Add(rating);
-        }
         public IReadOnlyCollection<Recipe> GetCreatedRecipes()
         {
             return _createdRecipes.ToList().AsReadOnly();
-        }
-        public IReadOnlyCollection<RecipeRating> GetRatedRecipes()
-        {
-            return _ratedRecipes.ToList().AsReadOnly();
         }
     }
 
