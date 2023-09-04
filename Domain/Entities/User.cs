@@ -9,6 +9,7 @@
         public bool IsActive { get; private set; }
 
         public ICollection<Recipe> _createdRecipes { get; set; }
+        public ICollection<UserRoles> roles { get; set; }
         private User() { }
         public User(string username, string email, string password,int id = 0)
         {
@@ -36,6 +37,11 @@
         public void Activate()
         {
             IsActive = true;
+        }
+
+        public void AssignRole(UserRoles role)
+        {
+            this.roles.Add(role);
         }
 
         public Recipe CreateRecipe(string title, string description, string instructions)

@@ -9,5 +9,6 @@ namespace Domain.Repositories
         User FindUser(Expression<Func<User, bool>> expression);
         List<User> users(Expression<Func<User, bool>> expression);
         void Update(User user);
+        void AddRole(int userId, string role);
     }
 }

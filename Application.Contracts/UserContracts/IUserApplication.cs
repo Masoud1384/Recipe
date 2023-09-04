@@ -7,10 +7,11 @@ namespace Application.Contracts.UserContracts
     public interface IUserApplication
     {
         List<UserViewMdoel> SelectAllUsers();
-        UserViewMdoel FindRecipe(Expression<Func<User, bool>> expression);
-        void DeActiveUser(int userI);
-        void AddUser(CreateUserCommand user);
-        void Update(UpdateUserCommand user);
-        void ActivateUser(int userId);
+        UserViewMdoel FindUser(Expression<Func<User, bool>> expression);
+        bool DeActiveUser(int userI);
+        bool AddUser(CreateUserCommand user);
+        bool Update(UpdateUserCommand user);
+        bool ActivateUser(int userId);
+        void AddRoleToUser(int userId,string role);
     }
 }

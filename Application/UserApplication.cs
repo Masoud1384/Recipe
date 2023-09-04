@@ -1,6 +1,8 @@
-﻿using Application.Contracts.RecipeIngredientContracts;
+﻿using Application.Contracts;
+using Application.Contracts.RecipeIngredientContracts;
 using Application.Contracts.UserContracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Repositories;
 using System.Linq.Expressions;
 
@@ -15,34 +17,52 @@ namespace Application
             _userRepository = userRepository;
         }
 
-        public void ActivateUser(int userId)
+        public bool ActivateUser(int userId)
         {
             var user = _userRepository.Get(userId);
             if (user != null)
             {
                 user.Activate();
                 _userRepository.SaveChanges();
+                return true;
             }
+            return false;
         }
 
-        public void AddUser(CreateUserCommand usercmd)
+        public void AddRoleToUser(int userId, string role)
         {
+            _userRepository.AddRole(userId,role);
+        }
+
+        public bool AddUser(CreateUserCommand usercmd)
+        {
+            var result =new OperationResult();
+            if (_userRepository.Exists(u => u.Email == usercmd.Email || u.Username == usercmd.Username))
+            {
+                result.Failed("there is an other user with this email or username, please choose another");
+                return result.IsSucceeded;
+            }
             var user = new User(usercmd.Username, usercmd.Email, usercmd.Password);
+            user.AssignRole(new UserRoles(SampleRoles.user));
             _userRepository.Create(user);
             _userRepository.SaveChanges();
+            result.Success("operation successed");
+            return result.IsSucceeded;
         }
 
-        public void DeActiveUser(int userId)
+        public bool DeActiveUser(int userId)
         {
             var user = _userRepository.Get(userId);
             if (user != null)
             {
                 user.DeActive();
                 _userRepository.SaveChanges();
+                return true;
             }
+            return false;
         }
 
-        public UserViewMdoel FindRecipe(Expression<Func<User, bool>> expression)
+        public UserViewMdoel FindUser(Expression<Func<User, bool>> expression)
         {
             var user = _userRepository.FindUser(expression);
             return new UserViewMdoel
@@ -67,16 +87,20 @@ namespace Application
             }).OrderByDescending(t => t.Id).ToList();
         }
 
-        public void Update(UpdateUserCommand usercmd)
+        public bool Update(UpdateUserCommand usercmd)
         {
             var user = _userRepository.FindUser(r => r.Id == usercmd.Id);
             if (user != null)
             {
-                var updateobj = new User(usercmd.Username,usercmd.Email,usercmd.Password,usercmd.Id);
+                var updateobj = new User(usercmd.Username, usercmd.Email, usercmd.Password, usercmd.Id);
                 _userRepository.Update(updateobj);
+                return true;
             }
             else
-                throw new NullReferenceException();
+            {
+                return false;
+            }
+
         }
     }
 }

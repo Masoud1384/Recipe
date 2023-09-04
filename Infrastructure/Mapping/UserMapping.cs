@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.Reflection.Emit;
 using System.Text;
 
 namespace Infrastructure.Mapping
@@ -27,7 +26,7 @@ namespace Infrastructure.Mapping
                 .HasColumnType("varchar")
                 //.HasConversion(v => v.ToString(),v => Guid.Parse(v).ToString());
                 .HasConversion(u => Encode(u), u => DeCode(u));
-            builder.Property(u => u.Email)
+            builder.Property(u => u.Password)
                 .IsRequired()
                 .HasConversion(u => Encode(u), u => DeCode(u));
             builder.Property(u => u.IsActive)

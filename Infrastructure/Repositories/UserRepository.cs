@@ -13,6 +13,17 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
+
+        public void AddRole(int userId, string role)
+        {
+            var user = FindUser(u => u.Id == userId);
+            if (user != null)
+            {
+                user.AssignRole(new UserRoles(role));
+                _context.SaveChanges();
+            }
+        }
+
         public User FindUser(Expression<Func<User, bool>> expression)
         {
             return _context.users.FirstOrDefault(expression);
@@ -21,7 +32,7 @@ namespace Infrastructure.Repositories
         public void Update(User user)
         {
             var User = Get(user.Id);
-            User.Edit(user.Username,user.Email);
+            User.Edit(user.Username, user.Email);
             User.ChangePassword(user.Password);
             _context.SaveChanges();
         }

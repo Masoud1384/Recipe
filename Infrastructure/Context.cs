@@ -14,6 +14,7 @@ namespace Infrastructure
         public DbSet<User> users { get; set; }
         public DbSet<Recipe> recipes { get; set; }
         public DbSet<RecipeIngredient> ingredients { get; set; }
+        public DbSet<UserRoles> userRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

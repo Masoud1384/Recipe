@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230904000542_password property changed")]
+    partial class passwordpropertychanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 4, 12, 41, 48, 661, DateTimeKind.Local).AddTicks(8106));
+                        .HasDefaultValue(new DateTime(2023, 9, 3, 17, 5, 42, 765, DateTimeKind.Local).AddTicks(2404));
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -92,7 +95,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ingredient_add_date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 4, 12, 41, 48, 661, DateTimeKind.Local).AddTicks(3801));
+                        .HasDefaultValue(new DateTime(2023, 9, 3, 17, 5, 42, 764, DateTimeKind.Local).AddTicks(7882));
 
                     b.HasKey("Id");
 
@@ -125,7 +128,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 4, 12, 41, 48, 662, DateTimeKind.Local).AddTicks(4918));
+                        .HasDefaultValue(new DateTime(2023, 9, 3, 17, 5, 42, 765, DateTimeKind.Local).AddTicks(9708));
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -150,28 +153,6 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserRoles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("userRoles");
-                });
-
             modelBuilder.Entity("Domain.Entities.Recipe", b =>
                 {
                     b.HasOne("Domain.Entities.User", "Author")
@@ -194,17 +175,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserRoles", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "user")
-                        .WithMany("roles")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Domain.Entities.Recipe", b =>
                 {
                     b.Navigation("_ingredients");
@@ -213,8 +183,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("_createdRecipes");
-
-                    b.Navigation("roles");
                 });
 #pragma warning restore 612, 618
         }
