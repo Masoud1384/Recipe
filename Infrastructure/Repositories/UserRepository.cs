@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
@@ -26,7 +27,7 @@ namespace Infrastructure.Repositories
 
         public User FindUser(Expression<Func<User, bool>> expression)
         {
-            return _context.users.FirstOrDefault(expression);
+            return _context.users.Include(t=>t.roles).FirstOrDefault(expression);
         }
 
         public void Update(User user)

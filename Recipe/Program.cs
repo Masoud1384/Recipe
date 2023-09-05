@@ -55,7 +55,7 @@ app.Map("/Info", builder =>
     {
         if (context.User.Identity.IsAuthenticated)
         {
-            if (context.User.IsInRole("User"))
+            if (context.User.IsInRole("User")&&context.User.IsInRole("Admin"))
             {
                 await context.Response.WriteAsync(context.User.FindFirst(ClaimTypes.Email).ToString());
             }

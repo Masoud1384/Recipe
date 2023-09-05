@@ -31,12 +31,12 @@ namespace Application
 
         public void AddRoleToUser(int userId, string role)
         {
-            _userRepository.AddRole(userId,role);
+            _userRepository.AddRole(userId, role);
         }
 
         public bool AddUser(CreateUserCommand usercmd)
         {
-            var result =new OperationResult();
+            var result = new OperationResult();
             if (_userRepository.Exists(u => u.Email == usercmd.Email || u.Username == usercmd.Username))
             {
                 result.Failed("there is an other user with this email or username, please choose another");
@@ -65,14 +65,17 @@ namespace Application
         public UserViewMdoel FindUser(Expression<Func<User, bool>> expression)
         {
             var user = _userRepository.FindUser(expression);
-            return new UserViewMdoel
+            var uservm = new UserViewMdoel();
+            if (user != null)
             {
-                IsActive = user.IsActive,
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Password = user.Password,
-            };
+                uservm.Username = user.Username;
+                uservm.Email = user.Email;
+                uservm.Password = user.Password;
+                uservm.IsActive = user.IsActive;
+                uservm.Id = user.Id;
+                uservm.Roles = user.roles.ToList();
+            }
+            return uservm;
         }
 
         public List<UserViewMdoel> SelectAllUsers()

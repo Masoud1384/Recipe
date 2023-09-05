@@ -45,21 +45,16 @@ namespace Recipe.Pages
                     };
                     var authProperties = new AuthenticationProperties
                     {
-                        IsPersistent = true, 
+                        IsPersistent = true,
                         ExpiresUtc = DateTime.UtcNow.AddDays(30)
                     };
-
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
-                    
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,authProperties);
-
-                   return RedirectToPage("Index");
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                    return RedirectToPage("Index");
                 }
-
                 ModelState.AddModelError(string.Empty, "Registration failed. Please try again.");
             }
-
             return Page();
         }
     }

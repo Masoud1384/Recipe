@@ -9,15 +9,16 @@
         public bool IsActive { get; private set; }
 
         public ICollection<Recipe> _createdRecipes { get; set; }
-        public ICollection<UserRoles> roles { get; set; }
+        public ICollection<UserRoles> roles { get; private set; }
         private User() { }
-        public User(string username, string email, string password,int id = 0)
+        public User(string username, string email, string password, int id = 0)
         {
             this.Username = username;
             this.Email = email;
             this.Password = password;
             this.IsActive = true;
-            if(id > 0)
+            this.roles = new List<UserRoles>();
+            if (id > 0)
                 this.Id = id;
         }
         public void Edit(string username, string email)
@@ -25,7 +26,6 @@
             Username = username;
             Email = email;
         }
-
         public void ChangePassword(string newPasswrod)
         {
             this.Password = newPasswrod;
