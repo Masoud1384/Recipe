@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,8 +18,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
-    <!-- Preloader -->
-
 
     <header class="header-area">
         <!-- Navbar Area -->
@@ -26,7 +25,7 @@
             <div class="classy-nav-container breakpoint-off">
                 <div class="container">
                     <!-- Menu -->
-                    <nav style="padding-left:20%;" class="classy-navbar justify-content-between" id="deliciousNav">
+                    <nav style="padding-left:28%;" class="classy-navbar justify-content-between" id="deliciousNav">
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -40,7 +39,6 @@
                             <div class="classycloseIcon">
                                 <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
                             </div>
-
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
@@ -48,53 +46,36 @@
                                     <li>
                                         <a href="#">Pages</a>
                                         <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
+                                            <li><a asp-page="Index">Home</a></li>
                                             <li><a href="about.html">About Us</a></li>
-                                            <li><a href="blog-post.html">Blog Post</a></li>
-                                            <li><a href="receipe-post.html">Receipe Post</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="elements.html">Elements</a></li>
                                             <li>
-                                                <a href="#">Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="index.html">Home</a></li>
-                                                    <li><a href="about.html">About Us</a></li>
-                                                    <li><a href="blog-post.html">Blog Post</a></li>
-                                                    <li><a href="receipe-post.html">Receipe Post</a></li>
-                                                    <li><a href="contact.html">Contact</a></li>
-                                                    <li><a href="elements.html">Elements</a></li>
-                                                    <li>
-                                                        <a href="#">Dropdown</a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="index.html">Home</a></li>
-                                                            <li><a href="about.html">About Us</a></li>
-                                                            <li><a href="blog-post.html">Blog Post</a></li>
-                                                            <li><a href="receipe-post.html">Receipe Post</a></li>
-                                                            <li><a href="contact.html">Contact</a></li>
-                                                            <li><a href="elements.html">Elements</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
+                                                @{
+                                                    var claimsIdentity = User.Identity as ClaimsIdentity;
+                                                    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                                                }
+                                                <a class="nav-link text-dark" asp-page="CreateRecipe">
+                                                    Create recipe
+                                                </a>
                                             </li>
+                                            <li>
+                                                <a class="nav-link text-dark" asp-page="UserRecipes">
+                                                    All recipe
+                                                </a>
+                                            </li>
+                                            <li><a href="blog-post.html">Blog Post</a></li>
+                                                <li>
+                                                    <a class="nav-link text-dark" asp-page="logout">
+                                                        Logout
+                                                    </a>
+                                                </li>
                                         </ul>
                                     </li>
-                                    <li>
-                                    </li>
-                                    <li><a href="receipe-post.html">Receipies</a></li>
                                     <li><a href="receipe-post.html">4 Vegans</a></li>
-                                    @if (User.Identity.IsAuthenticated)
+                                    @if(!User.Identity.IsAuthenticated)
                                     {
                                         <li>
-                                            <a class="nav-link text-dark" asp-page="Profile">
-                                                Profile
-                                            </a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            <a class="nav-link text-dark" asp-page="Login">
-                                                Login
+                                            <a class="nav-link text-dark" asp-page="SignUp">
+                                                Sign up
                                             </a>
                                         </li>
                                     }

@@ -20,6 +20,7 @@ namespace Recipe.Pages
         public CreateUserCommand user { get; set; }
         public async Task<IActionResult> OnGet()
         {
+            //This is for testing , at the last phase of the application it would be removed
             if (!User.Identity.IsAuthenticated)
             {
                 return Page();
@@ -33,7 +34,8 @@ namespace Recipe.Pages
         {
             if (ModelState.IsValid)
             {
-                var registrationSuccessful = _userApplication.AddUser(user);
+                int? id;
+                var registrationSuccessful = _userApplication.AddUser(user,out id);
 
                 if (registrationSuccessful)
                 {
@@ -43,6 +45,9 @@ namespace Recipe.Pages
                         new Claim(ClaimTypes.Role, SampleRoles.user),
                         new Claim(ClaimTypes.Email,user.Email)
                     };
+                    if (id != null)
+                        claims.Add(new Claim(ClaimTypes.NameIdentifier,id.Value.ToString()));
+
                     var authProperties = new AuthenticationProperties
                     {
                         IsPersistent = true,

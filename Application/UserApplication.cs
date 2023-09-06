@@ -34,12 +34,13 @@ namespace Application
             _userRepository.AddRole(userId, role);
         }
 
-        public bool AddUser(CreateUserCommand usercmd)
+        public bool AddUser(CreateUserCommand usercmd,out int? userId)
         {
             var result = new OperationResult();
             if (_userRepository.Exists(u => u.Email == usercmd.Email || u.Username == usercmd.Username))
             {
                 result.Failed("there is an other user with this email or username, please choose another");
+                userId = null;
                 return result.IsSucceeded;
             }
             var user = new User(usercmd.Username, usercmd.Email, usercmd.Password);
@@ -47,6 +48,7 @@ namespace Application
             _userRepository.Create(user);
             _userRepository.SaveChanges();
             result.Success("operation successed");
+            userId = user.Id;
             return result.IsSucceeded;
         }
 

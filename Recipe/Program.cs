@@ -1,11 +1,7 @@
-using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using NuGet.Versioning;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Context>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 Bootstraper.Configure(builder.Services);
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-      .AddCookie();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("MainAdminOnly", policy =>
@@ -32,6 +26,12 @@ builder.Services.AddAuthorization(options =>
     });
 
 });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/SignUp"; 
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,8 +71,5 @@ app.Map("/Info", builder =>
         }
     });
 });
-
-
 app.MapRazorPages();
-
 app.Run();

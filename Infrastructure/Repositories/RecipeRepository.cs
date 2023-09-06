@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
@@ -21,7 +22,7 @@ namespace Infrastructure.Repositories
 
         public List<Recipe> recipes(Expression<Func<Recipe, bool>> expression)
         {
-            return _context.recipes.Where(expression).ToList();
+            return _context.recipes.Include(i=>i._ingredients).Where(expression).ToList();
         }
 
         public void Update(Recipe recipe)

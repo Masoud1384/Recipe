@@ -75,6 +75,22 @@ namespace Application
             return all;
         }
 
+        public List<RecipeViewModel> SelectAllRecipes(Expression<Func<Recipe, bool>> expression)
+        {
+            return _reciperepository.recipes(expression).Select(x => new RecipeViewModel
+            {
+                Id = x.Id,
+                Title = x.Title,
+                AuthorId = x.AuthorId,
+                Description = x.Description,
+                Instructions = x.Instructions,
+                Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
+                {
+                    IngredientName = s.IngredientName,
+                    Quantity = s.Quantity,
+                }),
+            }).ToList();
+        }
 
         public void Update(UpdateRecipeCommand Recipe)
         {
