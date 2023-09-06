@@ -8,6 +8,7 @@
         public string Instructions { get; private set; }
         public bool IsRemoved { get; private set; }
         public int AuthorId { get; private set; }
+        public string Image { get; set; }
         public User Author { get; private set; }
 
         public ICollection<RecipeIngredient> _ingredients { get; set; }

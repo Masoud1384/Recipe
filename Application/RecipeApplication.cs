@@ -53,6 +53,7 @@ namespace Application
                 Instructions = recipe.Instructions,
                 Id = recipe.Id,
                 Title = recipe.Title,
+                Image = recipe.Image,
             };
         }
 
@@ -65,6 +66,7 @@ namespace Application
                 AuthorId = x.AuthorId,
                 Description = x.Description,
                 Instructions = x.Instructions,
+                Image = x.Image,
                 Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
                 {
                     IngredientName = s.IngredientName,
@@ -84,6 +86,7 @@ namespace Application
                 AuthorId = x.AuthorId,
                 Description = x.Description,
                 Instructions = x.Instructions,
+                Image = x.Image,                
                 Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
                 {
                     IngredientName = s.IngredientName,
