@@ -67,7 +67,6 @@ app.Map("/Info", builder =>
         else
         {
             await context.Response.WriteAsync("unauthenticated");
-
         }
     });
 });

@@ -28,17 +28,17 @@ namespace Application
 
         public void AddIngredients(int recipeId, List<CreateIngredientCommand> ingredientsCommand)
         {
-            var recipe = _reciperepository.FindRecipe(r=>r.Id==recipeId);
+            var recipe = _reciperepository.FindRecipe(r => r.Id == recipeId);
             if (recipe != null)
             {
-                var recipeIngredients = ingredientsCommand.Select(i => new RecipeIngredient(i.IngredientName,i.RecipeId)).ToList();
-                _reciperepository.AddIngredient(recipeId,recipeIngredients);
+                var recipeIngredients = ingredientsCommand.Select(i => new RecipeIngredient(i.IngredientName, i.RecipeId)).ToList();
+                _reciperepository.AddIngredient(recipeId, recipeIngredients);
             }
         }
 
         public int AddRecipe(CreateRecipeCommand Recipe)
         {
-            var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions,Recipe.Image, Recipe.AuthorId);
+            var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.Image, Recipe.AuthorId);
             var id = _reciperepository.AddRecipe(recipe);
             _reciperepository.SaveChanges();
             return id;
@@ -96,20 +96,19 @@ namespace Application
                 AuthorId = x.AuthorId,
                 Description = x.Description,
                 Instructions = x.Instructions,
-                Image = x.Image,                
-                Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
+                Image = x.Image,
+                Ingredients = x._ingredients.ToList().Select(s => new CreateIngredientCommand
                 {
                     IngredientName = s.Ingredient,
-                }),
+                }).ToList(),
             }).ToList();
         }
-
         public void Update(UpdateRecipeCommand Recipe)
         {
             var recipeUpdate = _reciperepository.FindRecipe(r => r.Id == Recipe.Id);
             if (recipeUpdate != null)
             {
-                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions,recipeUpdate.Image, Recipe.AuthorId, recipeUpdate.Id);
+                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, recipeUpdate.Image, Recipe.AuthorId, recipeUpdate.Id);
                 _reciperepository.Update(updateobj);
             }
             else

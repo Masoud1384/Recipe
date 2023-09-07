@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Http.Internal;
+using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Mapping
 {
@@ -24,8 +28,7 @@ namespace Infrastructure.Mapping
             builder.Property(r => r.IsRemoved)
                 .HasConversion(new BoolToStringConverter("Active","Not Active"))
                 .IsRequired();
-
-            builder
+             builder
                 .HasMany(a=>a._ingredients)
                 .WithOne(i=>i.Recipe)
                 .OnDelete(DeleteBehavior.Restrict);

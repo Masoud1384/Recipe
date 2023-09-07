@@ -49,30 +49,29 @@
                                             <li><a asp-page="Index">Home</a></li>
                                             <li><a href="about.html">About Us</a></li>
                                             <li>
-                                                @{
-                                                    var claimsIdentity = User.Identity as ClaimsIdentity;
-                                                    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                                                }
                                                 <a class="nav-link text-dark" asp-page="CreateRecipe">
                                                     Create recipe
                                                 </a>
                                             </li>
                                             <li>
                                                 <a class="nav-link text-dark" asp-page="UserRecipes">
-                                                    All recipe
+                                                    All my recipe
                                                 </a>
                                             </li>
                                             <li><a href="blog-post.html">Blog Post</a></li>
-                                              
+
                                         </ul>
                                     </li>
-                                    <li>
-                                        <a class="nav-link text-dark" asp-page="logout">
-                                            Logout
-                                        </a>
-                                    </li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li>
+                                            <a class="nav-link text-dark" asp-page="logout">
+                                                Logout
+                                            </a>
+                                        </li>
+                                    }
                                     <li><a href="receipe-post.html">4 Vegans</a></li>
-                                    @if(!User.Identity.IsAuthenticated)
+                                    @if (!User.Identity.IsAuthenticated)
                                     {
                                         <li>
                                             <a class="nav-link text-dark" asp-page="SignUp">

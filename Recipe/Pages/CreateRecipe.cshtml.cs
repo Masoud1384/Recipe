@@ -31,14 +31,8 @@ namespace Recipe.Pages
             Recipe.AuthorId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
             //This way of saving image is strongly inefficient and unuseable and of course i don't recommend it
             //at all , but as a way to use something new i prefer to use it but ,PLEASE DON'T USE THIS WAY
-            byte[] imageBytes;
-            string imagestr;
-            using (var memoryStream = new MemoryStream())
-            {
-                await recipeImage.CopyToAsync(memoryStream);
-                imageBytes = memoryStream.ToArray();
-                Recipe.Image = Convert.ToBase64String(imageBytes);
-            }
+            Recipe.Image = await EncodePic(recipeImage);
+
             var recipeId = _recipeApplication.AddRecipe(Recipe);
             foreach (var ingredient in ings)
             {
@@ -51,5 +45,16 @@ namespace Recipe.Pages
             _recipeApplication.AddIngredients(recipeId, ingredients);
             return RedirectToPage("Index");
         }
-    }
+        private async Task<string> EncodePic(IFormFile image)
+        {
+            byte[] imageBytes;
+            string imagestr;
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                imageBytes = memoryStream.ToArray();
+                return Convert.ToBase64String(imageBytes);
+            }
+        }
+    }    
 }
