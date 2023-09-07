@@ -44,9 +44,9 @@
             this.roles.Add(role);
         }
 
-        public Recipe CreateRecipe(string title, string description, string instructions)
+        public Recipe CreateRecipe(string title, string description, string instructions,string image)
         {
-            var recipe = new Recipe(title, description, instructions, this.Id);
+            var recipe = new Recipe(title, description, instructions,image, this.Id);
             _createdRecipes.Add(recipe);
             return recipe;
         }

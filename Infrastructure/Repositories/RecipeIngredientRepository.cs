@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories
         public void Update(RecipeIngredient recipeIngredient)
         {
             var ingredient = Get(recipeIngredient.Id);
-            ingredient.Edit(recipeIngredient.IngredientName,recipeIngredient.Quantity);
+            ingredient.Edit(recipeIngredient.Ingredient);
             _context.SaveChanges();
         }
     }

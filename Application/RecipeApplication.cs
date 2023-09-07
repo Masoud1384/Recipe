@@ -26,11 +26,22 @@ namespace Application
             }
         }
 
-        public void AddRecipe(CreateRecipeCommand Recipe)
+        public void AddIngredients(int recipeId, List<CreateIngredientCommand> ingredientsCommand)
         {
-            var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId);
-            _reciperepository.Create(recipe);
+            var recipe = _reciperepository.FindRecipe(r=>r.Id==recipeId);
+            if (recipe != null)
+            {
+                var recipeIngredients = ingredientsCommand.Select(i => new RecipeIngredient(i.IngredientName,i.RecipeId)).ToList();
+                _reciperepository.AddIngredient(recipeId,recipeIngredients);
+            }
+        }
+
+        public int AddRecipe(CreateRecipeCommand Recipe)
+        {
+            var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions,Recipe.Image, Recipe.AuthorId);
+            var id = _reciperepository.AddRecipe(recipe);
             _reciperepository.SaveChanges();
+            return id;
         }
 
         public void DeleteRecipe(int RecipeId)
@@ -69,8 +80,7 @@ namespace Application
                 Image = x.Image,
                 Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
                 {
-                    IngredientName = s.IngredientName,
-                    Quantity = s.Quantity,
+                    IngredientName = s.Ingredient,
                 }),
 
             }).OrderByDescending(x => x.Id).ToList();
@@ -89,8 +99,7 @@ namespace Application
                 Image = x.Image,                
                 Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
                 {
-                    IngredientName = s.IngredientName,
-                    Quantity = s.Quantity,
+                    IngredientName = s.Ingredient,
                 }),
             }).ToList();
         }
@@ -100,7 +109,7 @@ namespace Application
             var recipeUpdate = _reciperepository.FindRecipe(r => r.Id == Recipe.Id);
             if (recipeUpdate != null)
             {
-                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.AuthorId, recipeUpdate.Id);
+                var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions,recipeUpdate.Image, Recipe.AuthorId, recipeUpdate.Id);
                 _reciperepository.Update(updateobj);
             }
             else

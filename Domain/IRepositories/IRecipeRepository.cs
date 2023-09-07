@@ -9,5 +9,7 @@ namespace Domain.Repositories
         Recipe FindRecipe(Expression<Func<Recipe, bool>> expression);
         List<Recipe> recipes(Expression<Func<Recipe,bool>> expression);
         void Update(Recipe recipe);
+        int AddRecipe(Recipe recipe);
+        void AddIngredient(int recipeId,List<RecipeIngredient> recipeIngredients);
     }
 }

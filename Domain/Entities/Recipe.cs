@@ -13,13 +13,15 @@
 
         public ICollection<RecipeIngredient> _ingredients { get; set; }
         private Recipe() { }
-        public Recipe(string title, string description, string instructions, int authorId , int id = 0)
+        public Recipe(string title, string description, string instructions,string image, int authorId , int id = 0)
         {
             Title = title;
             Description = description;
             Instructions = instructions;
             IsRemoved = false;
             AuthorId = authorId;
+            _ingredients = new List<RecipeIngredient>();
+            this.Image = image;
             if (id != 0)
                 this.Id = id;
         }

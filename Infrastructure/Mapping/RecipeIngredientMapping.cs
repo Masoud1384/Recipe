@@ -9,12 +9,9 @@ namespace Infrastructure.Mapping
         public void Configure(EntityTypeBuilder<RecipeIngredient> builder)
         {
             builder.HasKey(t=>t.Id);
-            builder.Property(i => i.Quantity)
-                .IsRequired()
-                .HasMaxLength(128);
             builder.Property<DateTime>("ingredient_add_date")
                 .HasDefaultValue(DateTime.Now);
-            builder.Property(i=>i.IngredientName)
+            builder.Property(i=>i.Ingredient)
                 .IsRequired()
                 .HasMaxLength(128);
         }

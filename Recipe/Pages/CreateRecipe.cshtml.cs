@@ -2,29 +2,53 @@ using Application.Contracts.RecipeContracts;
 using Application.Contracts.RecipeIngredientContracts;
 using Application.Contracts.UserContracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace Recipe.Pages
 {
     [Authorize]
     public class CreateRecipeModel : PageModel
     {
-        public List<CreateIngredientCommand> ingredients = new List<CreateIngredientCommand>();
-        public CreateRecipeCommand recipe { get; set; }
+        [BindProperty]
+        public CreateRecipeCommand Recipe { get; set; }
         private readonly IUserApplication _userApplication;
-        public CreateRecipeModel(IUserApplication userApplication)
+        private readonly IRecipeApplication _recipeApplication;
+        public CreateRecipeModel(IUserApplication userApplication, IRecipeApplication recipeApplication)
         {
             _userApplication = userApplication;
+            _recipeApplication = recipeApplication;
         }
         public void OnGet(int userId)
         {
-
-            
         }
-        public async Task<IActionResult> OnPost(IFormFile? recipeImage)
+        public async Task<IActionResult> OnPost(IFormFile? recipeImage, string ingredientsStr)
         {
-
+            List<CreateIngredientCommand> ingredients = new List<CreateIngredientCommand>();
+            var ings = ingredientsStr.Trim().Split(',').ToList();
+            Recipe.AuthorId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            //This way of saving image is strongly inefficient and unuseable and of course i don't recommend it
+            //at all , but as a way to use something new i prefer to use it but ,PLEASE DON'T USE THIS WAY
+            byte[] imageBytes;
+            string imagestr;
+            using (var memoryStream = new MemoryStream())
+            {
+                await recipeImage.CopyToAsync(memoryStream);
+                imageBytes = memoryStream.ToArray();
+                Recipe.Image = Convert.ToBase64String(imageBytes);
+            }
+            var recipeId = _recipeApplication.AddRecipe(Recipe);
+            foreach (var ingredient in ings)
+            {
+                ingredients.Add(new CreateIngredientCommand()
+                {
+                    IngredientName = ingredient,
+                    RecipeId = recipeId
+                });
+            }
+            _recipeApplication.AddIngredients(recipeId, ingredients);
             return RedirectToPage("Index");
         }
     }
