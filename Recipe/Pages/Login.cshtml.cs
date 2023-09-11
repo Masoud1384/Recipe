@@ -38,9 +38,16 @@ namespace Recipe.Pages
                         new Claim(ClaimTypes.Name, user.Username),
                         new Claim(ClaimTypes.Email,user.Email),
                     };
-                    foreach (var role in user.Roles)
+                    if (user.Roles != null)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, role.Role));
+                        foreach (var role in user.Roles)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, role.Role));
+                        }
+                    }
+                    else
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, SampleRoles.user));
                     }
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);

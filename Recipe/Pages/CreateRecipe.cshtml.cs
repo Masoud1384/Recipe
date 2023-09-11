@@ -21,7 +21,7 @@ namespace Recipe.Pages
             _userApplication = userApplication;
             _recipeApplication = recipeApplication;
         }
-        public void OnGet(int userId)
+        public void OnGet()
         {
         }
         public async Task<IActionResult> OnPost(IFormFile? recipeImage, string ingredientsStr)

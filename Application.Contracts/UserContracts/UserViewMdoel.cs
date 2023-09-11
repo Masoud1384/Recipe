@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System.Text.Json.Serialization;
 
 namespace Application.Contracts.UserContracts
 {
@@ -6,6 +7,7 @@ namespace Application.Contracts.UserContracts
     {
         public int Id { get; set; }
         public bool IsActive { get; set; }
+        [JsonIgnore]
         public List<UserRoles> Roles { get; set; }
     }
 }

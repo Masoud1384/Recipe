@@ -70,5 +70,8 @@ app.Map("/Info", builder =>
         }
     });
 });
+
 app.MapRazorPages();
+app.MapControllers();
+
 app.Run();

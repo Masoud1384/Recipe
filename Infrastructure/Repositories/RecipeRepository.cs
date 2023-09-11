@@ -37,7 +37,7 @@ namespace Infrastructure.Repositories
 
         public Recipe FindRecipe(Expression<Func<Recipe, bool>> expression)
         {
-            return _context.recipes.FirstOrDefault(expression);
+            return _context.recipes.Include(r=>r._ingredients).FirstOrDefault(expression);
         }
 
         public List<Recipe> recipes(Expression<Func<Recipe, bool>> expression)

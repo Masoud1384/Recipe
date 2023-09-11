@@ -1,7 +1,6 @@
 ﻿using Application.Contracts.RecipeContracts;
 using Domain.Entities;
 using Domain.Repositories;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Application.Contracts.RecipeIngredientContracts;
 
@@ -57,15 +56,23 @@ namespace Application
         public RecipeViewModel FindRecipe(Expression<Func<Recipe, bool>> expression)
         {
             var recipe = _reciperepository.FindRecipe(expression);
-            return new RecipeViewModel
+            if (recipe != null)
             {
-                AuthorId = recipe.AuthorId,
-                Description = recipe.Description,
-                Instructions = recipe.Instructions,
-                Id = recipe.Id,
-                Title = recipe.Title,
-                Image = recipe.Image,
-            };
+                return new RecipeViewModel
+                {
+                    AuthorId = recipe.AuthorId,
+                    Description = recipe.Description,
+                    Instructions = recipe.Instructions,
+                    Id = recipe.Id,
+                    Title = recipe.Title,
+                    Image = recipe.Image,
+                    Ingredients = (List<CreateIngredientCommand>)recipe._ingredients.Select(t=>new IngredientViewModel
+                    {
+                        IngredientName =t.Ingredient,
+                    })
+                };
+            }
+            return null;
         }
 
         public List<RecipeViewModel> SelectAllRecipes()

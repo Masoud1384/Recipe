@@ -24,8 +24,7 @@ namespace Infrastructure.Mapping
                 .IsRequired()
                 .HasMaxLength(150)
                 .HasColumnType("varchar")
-                //.HasConversion(v => v.ToString(),v => Guid.Parse(v).ToString());
-                .HasConversion(u => Encode(u), u => DeCode(u));
+               .HasConversion(u => Encode(u), u => DeCode(u));
             builder.Property(u => u.Password)
                 .IsRequired()
                 .HasConversion(u => Encode(u), u => DeCode(u));
@@ -42,8 +41,16 @@ namespace Infrastructure.Mapping
         }
         public static string DeCode(string encoded)
         {
-            var text = Convert.FromBase64String(encoded);
-            return Encoding.UTF8.GetString(text);
+            try
+            {
+                var text = Convert.FromBase64String(encoded);
+                return Encoding.UTF8.GetString(text);
+            }
+            catch (FormatException ex)
+            {
+                return string.Empty;
+            }
         }
+
     }
 }
