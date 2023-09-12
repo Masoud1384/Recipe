@@ -62,6 +62,8 @@ namespace Recipe.Api.ApiController
         {
             bool isSuccesed = false;
             isSuccesed = _userApplication.Update(userCmd);
+            //Restful api rules must be followed
+            //if the object is not exists in put request so it should be generated
             if (!isSuccesed)
             {
                 var createcmd = new CreateUserCommand
@@ -74,16 +76,20 @@ namespace Recipe.Api.ApiController
                 isSuccesed = _userApplication.AddUser(createcmd, out newid);
             }
             if (isSuccesed)
-            {
                 return Ok();
-            }
+
             return BadRequest();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var result = _userApplication.DeActiveUser(id);
+            if(result)
+                return Ok();
+
+            return NotFound();
         }
     }
 }

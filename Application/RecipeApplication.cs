@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using System.Linq.Expressions;
 using Application.Contracts.RecipeIngredientContracts;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Application
 {
@@ -35,22 +36,27 @@ namespace Application
             }
         }
 
-        public int AddRecipe(CreateRecipeCommand Recipe)
+        public bool AddRecipe(CreateRecipeCommand Recipe, out int? recipeId)
         {
             var recipe = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, Recipe.Image, Recipe.AuthorId);
-            var id = _reciperepository.AddRecipe(recipe);
+            recipeId = _reciperepository.AddRecipe(recipe);
             _reciperepository.SaveChanges();
-            return id;
+            if (recipeId != null)
+                return true;
+
+            return false;
         }
 
-        public void DeleteRecipe(int RecipeId)
+        public bool DeleteRecipe(int RecipeId)
         {
             var recipe = _reciperepository.Get(RecipeId);
             if (recipe != null)
             {
                 recipe.Delete();
                 _reciperepository.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         public RecipeViewModel FindRecipe(Expression<Func<Recipe, bool>> expression)
@@ -66,9 +72,9 @@ namespace Application
                     Id = recipe.Id,
                     Title = recipe.Title,
                     Image = recipe.Image,
-                    Ingredients = (List<CreateIngredientCommand>)recipe._ingredients.Select(t=>new IngredientViewModel
+                    Ingredients = (List<CreateIngredientCommand>)recipe._ingredients.Select(t => new IngredientViewModel
                     {
-                        IngredientName =t.Ingredient,
+                        IngredientName = t.Ingredient,
                     })
                 };
             }
@@ -110,16 +116,20 @@ namespace Application
                 }).ToList(),
             }).ToList();
         }
-        public void Update(UpdateRecipeCommand Recipe)
+        public bool Update(UpdateRecipeCommand Recipe)
         {
             var recipeUpdate = _reciperepository.FindRecipe(r => r.Id == Recipe.Id);
             if (recipeUpdate != null)
             {
                 var updateobj = new Recipe(Recipe.Title, Recipe.Description, Recipe.Instructions, recipeUpdate.Image, Recipe.AuthorId, recipeUpdate.Id);
                 _reciperepository.Update(updateobj);
+                return true;
             }
             else
+            {
+                return false;
                 throw new NullReferenceException();
+            }
         }
     }
 }

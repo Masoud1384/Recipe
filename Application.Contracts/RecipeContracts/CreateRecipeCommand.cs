@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.RecipeIngredientContracts;
+using System.Text.Json.Serialization;
 
 namespace Application.Contracts.RecipeContracts
 {
