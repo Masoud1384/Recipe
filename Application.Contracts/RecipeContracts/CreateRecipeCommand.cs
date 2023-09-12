@@ -8,7 +8,9 @@ namespace Application.Contracts.RecipeContracts
         public string Title { get;  set; }
         public string Description { get; set; }
         public string Instructions { get; set; }
+        [JsonIgnore]
         public string Image { get; set; }
+        [JsonIgnore]
         public List<CreateIngredientCommand> Ingredients { get; set; }
         public int AuthorId { get; set; }
     }

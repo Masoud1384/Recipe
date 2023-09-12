@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Application.Contracts.RecipeContracts;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Application.Contracts.RecipeIngredientContracts;
+using System.Security.Claims;
+using Humanizer;
 
 namespace Recipe.Pages
 {
@@ -10,26 +13,57 @@ namespace Recipe.Pages
     public class EditRecipeModel : PageModel
     {
         private readonly IRecipeApplication _recipeApplication;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public EditRecipeModel(IRecipeApplication recipeApplication)
+        public EditRecipeModel(IRecipeApplication recipeApplication, IWebHostEnvironment hostingEnvironment)
         {
+            _hostingEnvironment = hostingEnvironment;
             _recipeApplication = recipeApplication;
         }
-
-        public UpdateRecipeCommand recipe { get; set; }
+        [BindProperty]
+        public UpdateRecipeCommand Recipe { get; set; } 
 
         public void OnGet(int recipeId)
         {
-            var Recipe = _recipeApplication.FindRecipe(r=>r.Id==recipeId);
+            var recipe = _recipeApplication.FindRecipe(r => r.Id == recipeId);
+            Recipe = new UpdateRecipeCommand();
             #region Initializing recipe
-            recipe.Title = Recipe.Title;    
-            recipe.Description = Recipe.Description;    
-            recipe.AuthorId = Recipe.AuthorId;    
-            recipe.Instructions = Recipe.Instructions;    
-            recipe.Ingredients = Recipe.Ingredients;    
-            recipe.Id = Recipe.Id;
+            Recipe.Title = recipe.Title;
+            Recipe.Description = recipe.Description;
+            Recipe.AuthorId = recipe.AuthorId;
+            Recipe.Instructions = recipe.Instructions;
+            Recipe.Ingredients = recipe.Ingredients;
+            Recipe.Id = recipe.Id;
             #endregion
-
+        }
+        public async Task<IActionResult> OnPost(IFormFile? recipeImage, string ingredientsStr)
+        {
+            List<CreateIngredientCommand> ingredients = new List<CreateIngredientCommand>();
+            var ings = ingredientsStr.Trim().Split(',').ToList();
+            //This way of saving image is strongly inefficient and unuseable and of course i don't recommend it
+            //at all , but as a way to use something new i prefer to use it but ,PLEASE DON'T USE THIS WAY
+            if (recipeImage != null)
+            {
+                var rootPath = _hostingEnvironment.WebRootPath;
+                var oldPic = Path.Combine(rootPath, Recipe.Image.TrimStart('\\'));
+                if (System.IO.File.Exists(oldPic))
+                {
+                    System.IO.File.Delete(oldPic);
+                }
+                var resultPic = _recipeApplication.RemovePicture(Recipe.Id);
+                Recipe.Image = await CreateRecipeModel.EncodePic(recipeImage);
+            }
+            var result = _recipeApplication.Update(Recipe);
+            foreach (var ingredient in ings)
+            {
+                ingredients.Add(new CreateIngredientCommand()
+                {
+                    IngredientName = ingredient,
+                    RecipeId = Recipe.Id
+                });
+            }
+            _recipeApplication.AddIngredients(Recipe.Id, ingredients);
+            return RedirectToPage("Index");
         }
     }
 }

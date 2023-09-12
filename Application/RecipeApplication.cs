@@ -29,6 +29,10 @@ namespace Application
         public void AddIngredients(int recipeId, List<CreateIngredientCommand> ingredientsCommand)
         {
             var recipe = _reciperepository.FindRecipe(r => r.Id == recipeId);
+            if (recipe._ingredients.Count() > 0)
+            {
+                recipe._ingredients.Clear();
+            }
             if (recipe != null)
             {
                 var recipeIngredients = ingredientsCommand.Select(i => new RecipeIngredient(i.IngredientName, i.RecipeId)).ToList();
@@ -72,18 +76,27 @@ namespace Application
                     Id = recipe.Id,
                     Title = recipe.Title,
                     Image = recipe.Image,
-                    Ingredients = (List<CreateIngredientCommand>)recipe._ingredients.Select(t => new IngredientViewModel
+                    Ingredients = recipe._ingredients.Select(t => new CreateIngredientCommand
                     {
                         IngredientName = t.Ingredient,
-                    })
+                    }).ToList(),
                 };
             }
             return null;
         }
+        public bool RemovePicture(int recipeId)
+        {
+            var result = _reciperepository.RemovePicture(recipeId);
+            if (result)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public List<RecipeViewModel> SelectAllRecipes()
         {
-            var all = _reciperepository.Get().Select(x => new RecipeViewModel
+            var all = _reciperepository.recipes().Select(x => new RecipeViewModel
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -91,15 +104,14 @@ namespace Application
                 Description = x.Description,
                 Instructions = x.Instructions,
                 Image = x.Image,
-                Ingredients = (List<CreateIngredientCommand>)x._ingredients.ToList().Select(s => new CreateIngredientCommand
+                Ingredients = x._ingredients.Select(s => new CreateIngredientCommand
                 {
                     IngredientName = s.Ingredient,
-                }),
+                }).ToList(),
 
             }).OrderByDescending(x => x.Id).ToList();
             return all;
         }
-
         public List<RecipeViewModel> SelectAllRecipes(Expression<Func<Recipe, bool>> expression)
         {
             return _reciperepository.recipes(expression).Select(x => new RecipeViewModel

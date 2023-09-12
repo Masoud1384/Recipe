@@ -37,12 +37,29 @@ namespace Infrastructure.Repositories
 
         public Recipe FindRecipe(Expression<Func<Recipe, bool>> expression)
         {
-            return _context.recipes.Include(r=>r._ingredients).FirstOrDefault(expression);
+            return _context.recipes.Include(r => r._ingredients).FirstOrDefault(expression);
         }
 
         public List<Recipe> recipes(Expression<Func<Recipe, bool>> expression)
         {
             return _context.recipes.Include(i => i._ingredients).Where(expression).ToList();
+        }
+
+        public List<Recipe> recipes()
+        {
+            return _context.recipes.Include(r => r._ingredients).ToList();
+        }
+
+        public bool RemovePicture(int recipeId)
+        {
+            var result = _context.recipes.Find(recipeId);
+            if (result != null)
+            {
+                result.RemovePicture();
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public void Update(Recipe recipe)

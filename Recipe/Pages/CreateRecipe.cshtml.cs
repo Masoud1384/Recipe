@@ -32,20 +32,20 @@ namespace Recipe.Pages
             //This way of saving image is strongly inefficient and unuseable and of course i don't recommend it
             //at all , but as a way to use something new i prefer to use it but ,PLEASE DON'T USE THIS WAY
             Recipe.Image = await EncodePic(recipeImage);
-
-            var recipeId = _recipeApplication.AddRecipe(Recipe);
+            int? recipeId;
+            var result = _recipeApplication.AddRecipe(Recipe,out recipeId);
             foreach (var ingredient in ings)
             {
                 ingredients.Add(new CreateIngredientCommand()
                 {
                     IngredientName = ingredient,
-                    RecipeId = recipeId
+                    RecipeId = (int)recipeId
                 });
             }
-            _recipeApplication.AddIngredients(recipeId, ingredients);
+            _recipeApplication.AddIngredients((int)recipeId, ingredients);
             return RedirectToPage("Index");
         }
-        private async Task<string> EncodePic(IFormFile image)
+        public static async Task<string> EncodePic(IFormFile image)
         {
             byte[] imageBytes;
             string imagestr;

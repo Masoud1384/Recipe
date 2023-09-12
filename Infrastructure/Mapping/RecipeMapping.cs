@@ -31,7 +31,7 @@ namespace Infrastructure.Mapping
              builder
                 .HasMany(a=>a._ingredients)
                 .WithOne(i=>i.Recipe)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

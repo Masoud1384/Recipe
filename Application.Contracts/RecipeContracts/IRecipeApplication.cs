@@ -7,6 +7,7 @@ namespace Application.Contracts.RecipeContracts
     public interface IRecipeApplication
     {
         List<RecipeViewModel> SelectAllRecipes();
+        public bool RemovePicture(int recipeId);
         List<RecipeViewModel> SelectAllRecipes(Expression<Func<Recipe, bool>> expression);
         RecipeViewModel FindRecipe(Expression<Func<Recipe, bool>> expression);
         bool DeleteRecipe(int RecipeId);

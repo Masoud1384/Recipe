@@ -33,6 +33,10 @@
         {
             IsRemoved = true;
         }
+        public void RemovePicture()
+        {
+            this.Image = "";
+        }
         public void Restore()
         {
             IsRemoved = true;

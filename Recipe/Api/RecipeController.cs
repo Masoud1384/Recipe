@@ -3,7 +3,7 @@ using Application.Contracts.RecipeContracts;
 using Application.Contracts.UserContracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Recipe.Recipe.Api
+namespace Recipe.Api
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -40,10 +40,11 @@ namespace Recipe.Recipe.Api
         [HttpPost]
         public IActionResult Post([FromBody] CreateRecipeCommand recipeCmd)
         {
-            var Id = _recipeApplication.AddRecipe(recipeCmd);
-            if (Id > 0)
+            int? id; 
+            var result = _recipeApplication.AddRecipe(recipeCmd,out id);
+            if (result)
             {
-                var url = Url.Action(nameof(Get), "Recipe", new { id = Id }, Request.Scheme);
+                var url = Url.Action(nameof(Get), "Recipe", new { id = id }, Request.Scheme);
                 return Created(url, recipeCmd);
             }
             return BadRequest();

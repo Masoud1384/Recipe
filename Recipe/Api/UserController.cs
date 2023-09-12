@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Emit;
 using Newtonsoft.Json;
 
-namespace Recipe.Api.ApiController
+namespace Recipe.Api
 {
     [Route("api/[controller]")]
     [ApiController]
