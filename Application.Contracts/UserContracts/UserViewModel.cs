@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.Contracts.UserContracts
 {
-    public class UserViewMdoel : CreateUserCommand
+    public class UserViewModel : CreateUserCommand
     {
         public int Id { get; set; }
         public bool IsActive { get; set; }

@@ -6,8 +6,8 @@ namespace Application.Contracts.UserContracts
 {
     public interface IUserApplication
     {
-        List<UserViewMdoel> SelectAllUsers();
-        UserViewMdoel FindUser(Expression<Func<User, bool>> expression);
+        List<UserViewModel> SelectAllUsers();
+        UserViewModel FindUser(Expression<Func<User, bool>> expression);
         bool DeActiveUser(int userI);
         bool AddUser(CreateUserCommand user,out int? userId);
         bool Update(UpdateUserCommand user);

@@ -64,10 +64,10 @@ namespace Application
             return false;
         }
 
-        public UserViewMdoel FindUser(Expression<Func<User, bool>> expression)
+        public UserViewModel FindUser(Expression<Func<User, bool>> expression)
         {
             var user = _userRepository.FindUser(expression);
-            var uservm = new UserViewMdoel();
+            var uservm = new UserViewModel();
             if (user != null)
             {
                 uservm.Username = user.Username;
@@ -80,9 +80,9 @@ namespace Application
             return uservm;
         }
 
-        public List<UserViewMdoel> SelectAllUsers()
+        public List<UserViewModel> SelectAllUsers()
         {
-            return _userRepository.Get().Select(t => new UserViewMdoel
+            return _userRepository.Get().Select(t => new UserViewModel
             {
                 Id = t.Id,
                 IsActive = t.IsActive,
