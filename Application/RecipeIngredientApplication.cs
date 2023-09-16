@@ -48,7 +48,7 @@ namespace Application
             var recipe = _ingradientRepository.FindIngredient(expression);
             return new IngredientViewModel
             {
-                RecipeId = recipe.Id,
+                RecipeId = recipe.RecipeId,
                 Id = recipe.Id,
                 IngredientName = recipe.Ingredient,
             };
