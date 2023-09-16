@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Emit;
 using Newtonsoft.Json;
+using Recipe.Api.Dto;
+using System.Security.Cryptography.Xml;
 
 namespace Recipe.Api
 {
@@ -10,7 +12,6 @@ namespace Recipe.Api
     public class UserController : ControllerBase
     {
         private readonly IUserApplication _userApplication;
-
         public UserController(IUserApplication userApplication)
         {
             _userApplication = userApplication;
@@ -21,7 +22,37 @@ namespace Recipe.Api
         [HttpGet]
         public IActionResult Get()
         {
-            var result = _userApplication.SelectAllUsers();
+            List<UserDto> result = _userApplication.SelectAllUsers().Select(u =>
+                new UserDto
+                {
+                    IsActive = u.IsActive,
+                    Id = u.Id,
+                    Email = u.Email,
+                    Password = u.Password,
+                    Username = u.Username,
+                    Roles = u.Roles,
+                    links = new List<Links>
+                    {
+                        new Links
+                        {
+                            Link = Url.Action(nameof(Get),"User",new {u.Id},Request.Scheme),
+                            Method = "Get",
+                            Rel = "Self"
+                        },
+                        new Links
+                        {
+                            Link = Url.Action("Delete","User",new {u.Id},Request.Scheme),
+                            Method = "Delete",
+                            Rel = "Delete"
+                        },
+                        new Links
+                        {
+                            Link = Url.Action(nameof(Put),"User",new { userCmd = new UserDto{Id=u.Id,Email=u.Email,Password=u.Password,Username=u.Username } },Request.Scheme),
+                            Method = "Put",
+                            Rel = "Update"
+                        },
+                    }
+                }).ToList();
             return Ok(result);
         }
 
@@ -58,10 +89,16 @@ namespace Recipe.Api
 
         // PUT api/<UserController>/5
         [HttpPut]
-        public IActionResult Put([FromBody] UpdateUserCommand userCmd)
+        public IActionResult Put([FromBody] UserDto userCmd)
         {
             bool isSuccesed = false;
-            isSuccesed = _userApplication.Update(userCmd);
+            isSuccesed = _userApplication.Update(new UpdateUserCommand
+            {
+                Email = userCmd.Email,
+                Id = userCmd.Id,
+                Password = userCmd.Password,
+                Username = userCmd.Username,
+            });
             //Restful api rules must be followed
             //if the object is not exists in put request so it should be generated
             if (!isSuccesed)
@@ -86,7 +123,7 @@ namespace Recipe.Api
         public IActionResult Delete(int id)
         {
             var result = _userApplication.DeActiveUser(id);
-            if(result)
+            if (result)
                 return Ok();
 
             return NotFound();

@@ -13,11 +13,8 @@ namespace Recipe.Pages
     public class EditRecipeModel : PageModel
     {
         private readonly IRecipeApplication _recipeApplication;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-
-        public EditRecipeModel(IRecipeApplication recipeApplication, IWebHostEnvironment hostingEnvironment)
+        public EditRecipeModel(IRecipeApplication recipeApplication)
         {
-            _hostingEnvironment = hostingEnvironment;
             _recipeApplication = recipeApplication;
         }
         [BindProperty]
@@ -36,7 +33,7 @@ namespace Recipe.Pages
             Recipe.Id = recipe.Id;
             #endregion
         }
-        public async Task<IActionResult> OnPost(IFormFile? recipeImage, string ingredientsStr)
+        public async Task<IActionResult> OnPost(IFormFile? recipeImage, string ingredientsStr, [FromServices] IWebHostEnvironment _hostingEnvironment)
         {
             List<CreateIngredientCommand> ingredients = new List<CreateIngredientCommand>();
             var ings = ingredientsStr.Trim().Split(',').ToList();
