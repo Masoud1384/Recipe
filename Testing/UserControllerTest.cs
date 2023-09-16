@@ -5,6 +5,7 @@ using Application.Contracts.UserContracts;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using System.Linq.Expressions;
+using Recipe.Api.Dto;
 
 namespace Testing
 {
@@ -75,7 +76,7 @@ namespace Testing
             _mockUserApplication.Setup(app => app.Update(It.IsAny<UpdateUserCommand>())).Returns(true);
 
             // Act
-            var result = _controller.Put(new UpdateUserCommand());
+            var result = _controller.Put(new UserDto());
 
             // Assert
             Assert.IsType<OkResult>(result);
