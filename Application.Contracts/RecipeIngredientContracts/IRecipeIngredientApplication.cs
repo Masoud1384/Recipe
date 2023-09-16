@@ -6,8 +6,9 @@ namespace Application.Contracts.RecipeIngredientContracts
     public interface IRecipeIngredientApplication
     {
         List<IngredientViewModel> SelectAllIngredient();
+        List<IngredientViewModel> SelectAllIngredient(int recipeId);
         IngredientViewModel FindIngredient(Expression<Func<RecipeIngredient, bool>> expression);
-        void Delete(int IngredientId);
+        bool Delete(int IngredientId);
         void AddIngredient(CreateIngredientCommand createIngredientcommand);
         void Update(UpdateIngredientCommand updateIngredientCommand);
         void ActivateIngredient(int ingredientId);

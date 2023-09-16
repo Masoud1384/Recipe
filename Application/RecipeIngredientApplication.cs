@@ -1,5 +1,4 @@
-﻿using Application.Contracts.RecipeContracts;
-using Application.Contracts.RecipeIngredientContracts;
+﻿using Application.Contracts.RecipeIngredientContracts;
 using Domain.Entities;
 using Domain.Repositories;
 using System.Linq.Expressions;
@@ -32,14 +31,16 @@ namespace Application
             _ingradientRepository.SaveChanges();
         }
 
-        public void Delete(int IngredientId)
+        public bool Delete(int IngredientId)
         {
             var ingredient = _ingradientRepository.Get(IngredientId);
             if (ingredient != null)
             {
                 ingredient.Remove();
                 _ingradientRepository.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         public IngredientViewModel FindIngredient(Expression<Func<RecipeIngredient, bool>> expression)
@@ -63,6 +64,18 @@ namespace Application
             }).OrderByDescending(t => t.Id).ToList();
         }
 
+        public List<IngredientViewModel> SelectAllIngredient(int recipeId)
+        {
+            var result = _ingradientRepository.Ingredients(r=>r.RecipeId==recipeId).Select(t=>
+            new IngredientViewModel
+            {
+                RecipeId = t.Id,
+                IngredientName =t.Ingredient,
+                Id = t.RecipeId,
+            }).ToList();
+            return result;
+        }
+
         public void Update(UpdateIngredientCommand ingredient)
         {
             var recipeUpdate = _ingradientRepository.Get(ingredient.Id);
@@ -75,6 +88,5 @@ namespace Application
             else
                 throw new NullReferenceException();
         }
-
     }
 }
